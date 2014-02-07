@@ -7,42 +7,50 @@ http://www.fec.gov/finance/disclosure/metadata/DataDictionaryContributionstoCand
 import fileinput
 import csv
 
-total = 0.0
+def calculate_median(values):
+    values = sorted(values)
+    if len(values) % 2 == 1:
+        return values[len(values) / 2]
+    else:
+        return (values[len(values) / 2] + values[len(values) / 2 + 1]) / 2
 
-for row in csv.reader(fileinput.input(), delimiter='|'):
-    if not fileinput.isfirstline():
-        total += float(row[14])
-        ###
-        # TODO: calculate other statistics here
-        # You may need to store numbers in an array to access them together
-        ##/
+def calculate_standard_deviation(values, mean):
+    return ( sum([abs(value - mean) ** 2 for value in transaction_amounts]) / len(transaction_amounts) ) ** 0.5
 
-###
-# TODO: aggregate any stored numbers here
-#
-##/
+
+rows = [row for row in csv.reader(fileinput.input(), delimiter='|') if not fileinput.isfirstline()]
+
+transaction_amounts = [float(row[14]) for row in rows]
+candidate_IDs = set([row[16] for row in rows])
+
+total = sum(transaction_amounts)
+minimum = min(transaction_amounts)
+maximum = max(transaction_amounts)
+mean = total / len(transaction_amounts)
+median = calculate_median(transaction_amounts)
+standard_deviation = calculate_standard_deviation(transaction_amounts, mean)
+
 
 ##### Print out the stats
-print "Total: %s" % total
-print "Minimum: "
-print "Maximum: "
-print "Mean: "
-print "Median: "
-# square root can be calculated with N**0.5
-print "Standard Deviation: "
+print "Total: " + str(total)
+print "Minimum: " + str(minimum)
+print "Maximum: " + str(maximum)
+print "Mean: " + str(mean)
+print "Median: " + str(median)
+print "Standard Deviation: " + str(standard_deviation)
 
 ##### Comma separated list of unique candidate ID numbers
-print "Candidates: "
+print "Candidates: " + ', '.join(candidate_IDs)
+print '\n'
 
 def minmax_normalize(value):
     """Takes a donation amount and returns a normalized value between 0-1. The
-    normilzation should use the min and max amounts from the full dataset"""
+    normalization should use the min and max amounts from the full dataset"""
     ###
     # TODO: replace line below with the actual calculations
-    norm = value
+    # norm = value
     ###/
-
-    return norm
+    return (value - minimum) / (maximum - minimum)
 
 ##### Normalize some sample values
 print "Min-max normalized values: %r" % map(minmax_normalize, [2500, 50, 250, 35, 8, 100, 19])
