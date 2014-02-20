@@ -9,16 +9,3 @@ in the form '"review ID", unique word count'
 
 All data:
 "IrPktNaTJMm3-OrJ0T0A5g"	115
-
-
-
-OUTPUT FROM user_similarity.py
-in the form ''
-
-1000 records:
-
-
-10000 records:
-
-
-All data:
