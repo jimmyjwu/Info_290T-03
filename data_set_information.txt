@@ -1,0 +1,26 @@
+Homework 2: Obtain and Explore Data
+
+Data set:
+	Facebook social data obtained from
+		http://snap.stanford.edu/data/egonets-Facebook.html
+	This data set contains partial information for a subset of Facebook's social graph.
+
+Types of information available:
+	- The social graph: a list of nodes (people) numbered 0 through 4038 and 88234 edges
+	(friendships) between them.
+	- "Circles": lists that people manually create, to categorize their friends.
+	- "Features": "1" if a person lists a feature (e.g. "age") on his/her
+	profile; "0" if not listed.
+
+An interesting record:
+	Under user 698:		"circle9	697"
+	This means means that some person "user 698" has a friends list, to which he/she
+	added only one person. Usually friend lists contain a broad category of people, so
+	a particularly tight-knit list like this may suggest indicate a special relationship.
+
+Three questions that can be answered with this data set:
+	1. What cliques (both in the social sense and the graph-theoretic sense) exist in the
+	social graph?
+	2. Who are the influential players in the clusters found in the graph? Who are the
+	"bridges" that connect different clusters?
+	3. What properties make people more likely to be part of the same cluster?
