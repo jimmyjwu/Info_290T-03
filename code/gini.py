@@ -22,6 +22,7 @@ CANDIDATES = {
 ############### Set up variables
 # TODO: declare datastructures
 contributions_by_zip_and_candidate = {}
+contributions_by_candidate = {candidate: 0 for candidate in CANDIDATES.itervalues()}
 
 ############### Read through files
 for row in csv.reader(fileinput.input(), delimiter='|'):
@@ -35,6 +36,7 @@ for row in csv.reader(fileinput.input(), delimiter='|'):
     # TODO: save information to calculate Gini Index
     ##/
     contributions_by_zip_and_candidate.setdefault(zip_code, defaultdict(int))[candidate_name] += 1
+    contributions_by_candidate[candidate_name] += 1
 
 ###
 # TODO: calculate the values below:
@@ -46,10 +48,6 @@ def compute_gini_index(values):
     return 1 - sum([ (value / total) ** 2 for value in values])
 
 # Gini index for all zip codes
-contributions_by_candidate = defaultdict(int)
-for contributions_in_zip in contributions_by_zip_and_candidate.itervalues():
-    for candidate, contributions in contributions_in_zip.iteritems():
-        contributions_by_candidate[candidate] += contributions
 gini = compute_gini_index(contributions_by_candidate.values())
 total_contributions = float(sum(contributions_by_candidate.itervalues()))
 
