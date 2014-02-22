@@ -43,18 +43,19 @@ for row in csv.reader(fileinput.input(), delimiter='|'):
 gini = 0  # current Gini Index using candidate name as the class
 split_gini = 0  # weighted average of the Gini Indexes using candidate names, split up by zip code
 ##/
-def compute_gini_index(values):
+def gini_index(values):
     total = float(sum(values))
     return 1 - sum([ (value / total) ** 2 for value in values])
 
 # Gini index for all zip codes
-gini = compute_gini_index(contributions_by_candidate.values())
+gini = gini_index(contributions_by_candidate.values())
+
 total_contributions = float(sum(contributions_by_candidate.itervalues()))
+def zip_code_weight(contributions_by_candidate):
+    return sum(contributions_by_candidate) / total_contributions
 
 # Average Gini index over zip codes, weighted by number of records in that zip code
-for contributions_by_candidate_in_zip in contributions_by_zip_and_candidate.itervalues():
-    split_gini += (float(sum(contributions_by_candidate_in_zip.values())) / total_contributions) * compute_gini_index(contributions_by_candidate_in_zip.values())
-
+split_gini = sum([zip_code_weight(contributions_in_zip_by_candidate.values()) * gini_index(contributions_in_zip_by_candidate.values()) for contributions_in_zip_by_candidate in contributions_by_zip_and_candidate.itervalues()])
 
 print "Gini Index: %s" % gini
 print "Gini Index after split: %s" % split_gini
