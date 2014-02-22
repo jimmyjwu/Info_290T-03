@@ -42,9 +42,8 @@ gini = 0  # current Gini Index using candidate name as the class
 split_gini = 0  # weighted average of the Gini Indexes using candidate names, split up by zip code
 ##/
 def compute_gini_index(values):
-    total = sum(values)
-    gini_index = 1 - sum([ (float(value) / float(total)) ** 2 for value in values])
-    return gini_index
+    total = float(sum(values))
+    return 1 - sum([ (value / total) ** 2 for value in values])
 
 # Gini index for all zip codes
 contributions_by_candidate = defaultdict(int)
