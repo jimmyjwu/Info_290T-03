@@ -7,6 +7,7 @@ from lecture.
 LEARNING_RATE = 10
 OUTPUT_NODE = 6
 HIDDEN_NODES = [3, 4, 5]
+INPUT_NODES = [1, 2]
 
 actual_output_for_node = {
 	1: 1.0,
@@ -68,15 +69,17 @@ def new_weight(i, j):
 # Calculate output and hidden node errors
 error_for_node[OUTPUT_NODE] = output_error()
 [error_for_node.setdefault(node, hidden_node_error(node, [OUTPUT_NODE])) for node in HIDDEN_NODES]
+[error_for_node.setdefault(node, hidden_node_error(node, HIDDEN_NODES)) for node in INPUT_NODES]
 
 # Calculate new weights
 new_hidden_weights = {(i, j): new_weight(i, j) for i, j in weight_between_nodes.keys()}
 
-
 # Print results
-for node in HIDDEN_NODES + [OUTPUT_NODE]:
+for node in INPUT_NODES + HIDDEN_NODES + [OUTPUT_NODE]:
 	print 'Error for node ' + str(node) + ': ' + str(error_for_node[node])
 
+for (i, j), weight in new_hidden_weights.items():
+	print 'New weight for edge (' + str(i) + ',' + str(j) + ') is: ' + str(weight)
 
 
 
