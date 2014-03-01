@@ -9,8 +9,8 @@ OUTPUT_NODE = 6
 HIDDEN_NODES = [3, 4, 5]
 
 actual_output_for_node = {
-	# 1: 1,
-	# 2: 2,
+	1: 1.0,
+	2: 2.0,
 	3: 0.7311,
 	4: 0.0179,
 	5: 0.9933,
@@ -18,22 +18,26 @@ actual_output_for_node = {
 }
 
 expected_output_for_node = {
-	6: 0,
+	6: 0.0,
 }
 
 weight_between_nodes = {
-	(1, 3): -3,
-	(1, 4): 2,
-	(1, 5): 4,
-	(2, 3): 2,
-	(2, 4): -3,
+	(1, 3): -3.0,
+	(1, 4): 2.0,
+	(1, 5): 4.0,
+	(2, 3): 2.0,
+	(2, 4): -3.0,
 	(2, 5): 0.5,
 	(3, 6): 0.2,
 	(4, 6): 0.7,
 	(5, 6): 1.5,
 }
 
-def output_error(actual, expected):
+error_for_node = {}
+
+
+# Utility functions
+def output_error():
 	"""
 	Calculates the error in a node's output.
 	Intuitively, error is
@@ -42,34 +46,36 @@ def output_error(actual, expected):
 		y := expected output
 		f(x) := actual output of logistic/sigmoid function on input x
 	"""
-	actual, expected = float(actual), float(expected)
+	actual = actual_output_for_node[OUTPUT_NODE]
+	expected = expected_output_for_node[OUTPUT_NODE]
 	return (expected - actual) * (1 - actual) * actual
 
-def hidden_layer_error(output_j, errors_k_and_weights_jk):
+def hidden_node_error(node_i, nodes_j):
 	"""
-	Calculates the error of a node in a hidden layer
-	that has directed edges to nodes k.
+	Calculates the error of a node i in a hidden layer
+	that has directed edges to nodes j.
 	"""
-	return output_j * (1 - output_j) * sum([error_k * weight_jk for error_k, weight_jk in errors_k_and_weights_jk])
+	output_i = actual_output_for_node[node_i]
+	return output_i * (1 - output_i) * sum([error_for_node[j] * weight_between_nodes[(node_i, j)] for j in nodes_j])
 
-def new_weight(weight_ij, error_j, output_i):
+def new_weight(i, j):
 	"""
 	Calculates the new weight for edge (i, j).
 	"""
-	return weight_ij + LEARNING_RATE * error_j * output_i
+	return weight_between_nodes[(i, j)] + LEARNING_RATE * error_for_node[j] * actual_output_for_node[i]
 
 
 # Calculate output and hidden node errors
-output_node_error = output_error(actual_output_for_node[OUTPUT_NODE], expected_output_for_node[OUTPUT_NODE])
-error_for_hidden_node = {node: hidden_layer_error(actual_output_for_node[node], [(output_node_error, weight_between_nodes[(node, OUTPUT_NODE)])]) for node in HIDDEN_NODES}
+error_for_node[OUTPUT_NODE] = output_error()
+[error_for_node.setdefault(node, hidden_node_error(node, [OUTPUT_NODE])) for node in HIDDEN_NODES]
 
+# Calculate new weights
+new_hidden_weights = {(i, j): new_weight(i, j) for i, j in weight_between_nodes.keys()}
 
 
 # Print results
-print 'Error for node ' + str(OUTPUT_NODE) + ': ' + str(output_node_error)
-
-for node in HIDDEN_NODES:
-	print 'Error for node ' + str(node) + ': ' + str(error_for_hidden_node[node])
+for node in HIDDEN_NODES + [OUTPUT_NODE]:
+	print 'Error for node ' + str(node) + ': ' + str(error_for_node[node])
 
 
 
