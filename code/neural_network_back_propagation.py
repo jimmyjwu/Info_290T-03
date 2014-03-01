@@ -72,13 +72,13 @@ error_for_node[OUTPUT_NODE] = output_error()
 [error_for_node.setdefault(node, hidden_node_error(node, HIDDEN_NODES)) for node in INPUT_NODES]
 
 # Calculate new weights
-new_hidden_weights = {(i, j): new_weight(i, j) for i, j in weight_between_nodes.keys()}
+new_weights = {(i, j): new_weight(i, j) for i, j in weight_between_nodes.keys()}
 
 # Print results
 for node in INPUT_NODES + HIDDEN_NODES + [OUTPUT_NODE]:
 	print 'Error for node ' + str(node) + ': ' + str(error_for_node[node])
 
-for (i, j), weight in new_hidden_weights.items():
+for (i, j), weight in new_weights.items():
 	print 'New weight for edge (' + str(i) + ',' + str(j) + ') is: ' + str(weight)
 
 
