@@ -3,16 +3,22 @@ Utilities to calculate errors and new weights in the neural network
 from lecture.
 """
 
-# Learning rate
-l = 10
+# Constants
+LEARNING_RATE = 10
+OUTPUT_NODE = 6
+HIDDEN_NODES = [3, 4, 5]
 
-output_for_node = {
+actual_output_for_node = {
 	# 1: 1,
 	# 2: 2,
 	3: 0.7311,
 	4: 0.0179,
 	5: 0.9933,
 	6: 0.8387,
+}
+
+expected_output_for_node = {
+	6: 0,
 }
 
 weight_between_nodes = {
@@ -46,14 +52,24 @@ def hidden_layer_error(output_j, errors_k_and_weights_jk):
 	"""
 	return output_j * (1 - output_j) * sum([error_k * weight_jk for error_k, weight_jk in errors_k_and_weights_jk])
 
-def new_weight(weight_ij, error_j, output_i, learning_rate=l):
+def new_weight(weight_ij, error_j, output_i):
 	"""
 	Calculates the new weight for edge (i, j).
 	"""
-	return weight_ij + learning_rate * error_j * output_i
+	return weight_ij + LEARNING_RATE * error_j * output_i
+
+
+# Calculate output and hidden node errors
+output_node_error = output_error(actual_output_for_node[OUTPUT_NODE], expected_output_for_node[OUTPUT_NODE])
+error_for_hidden_node = {node: hidden_layer_error(actual_output_for_node[node], [(output_node_error, weight_between_nodes[(node, OUTPUT_NODE)])]) for node in HIDDEN_NODES}
 
 
 
+# Print results
+print 'Error for node ' + str(OUTPUT_NODE) + ': ' + str(output_node_error)
+
+for node in HIDDEN_NODES:
+	print 'Error for node ' + str(node) + ': ' + str(error_for_hidden_node[node])
 
 
 
