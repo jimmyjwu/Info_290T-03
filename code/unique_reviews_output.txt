@@ -1,0 +1,11 @@
+OUTPUT FROM unique_reviews.py
+in the form '"review ID", unique word count'
+
+1000 records:
+"iy_TylGtbLpryjLYr3WpCQ"	71
+
+10000 records:
+"TsaFmcuXpUR1tCcHc6xrmw"	189
+
+All data:
+"IrPktNaTJMm3-OrJ0T0A5g"	115
