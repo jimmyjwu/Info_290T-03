@@ -1,0 +1,36 @@
+PROBLEM 4: NORMALIZATION
+I lost points for purely arithmetic mistakes. Min-max normalization in the range [0, 1] scales the data according to the formula
+			 v - min 	v - 5
+	v_new = --------- = -----
+			max - min 	 20
+The output is thus
+	[0, 1, 1/20, 7/20, 1/2]
+
+
+PROBLEM 7.4: PIVOT
+
+
+
+
+PROBLEM 10: INFORMATION GAIN
+
+
+
+
+
+PROBLEM 14: DENDROGRAM
+I made the mistake of drawing the B-D merger and C-E merge at the same point in time.
+Correct dendrogram:
+	A 		D 		B 		C 		E
+	|		|		|		|		|
+	|		---------		|		|
+	|			|			|		|
+	|			|			---------
+	|			|				|
+	|			|				|
+	-------------				|
+			|					|
+			|					|
+			---------------------
+
+
