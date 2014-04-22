@@ -8,14 +8,15 @@ The output is thus
 
 
 PROBLEM 7.4: PIVOT
-
-
+A pivot operation swaps/rotates two axes or dimensions.
+	Example: we have a mapping:
+			ad --> pixel dimensions of ad.
+	A pivot transforms this into the mapping:
+			dimensions --> ads
 
 
 PROBLEM 10: INFORMATION GAIN
-
-
-
+When building a decision tree, the attribute with the highest information gain is used to split on the current node. Intuitively, the optimal choice of attribute minimizes the randomness/entropy/impurity in the resulting partition, in the hope that the output decision tree will be small (because few decisions will be needed to accurately classify a new data point).
 
 
 PROBLEM 14: DENDROGRAM
