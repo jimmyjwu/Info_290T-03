@@ -5,6 +5,7 @@ Classes are strings."""
 
 import fileinput
 import csv
+from collections import *
 
 (
     CMTE_ID, AMNDT_IND, RPT_TP, TRANSACTION_PGI, IMAGE_NUM, TRANSACTION_TP,
@@ -20,6 +21,8 @@ CANDIDATES = {
 
 ############### Set up variables
 # TODO: declare datastructures
+contributions_by_zip_and_candidate = {}
+contributions_by_candidate = {candidate: 0 for candidate in CANDIDATES.itervalues()}
 
 ############### Read through files
 for row in csv.reader(fileinput.input(), delimiter='|'):
@@ -32,12 +35,33 @@ for row in csv.reader(fileinput.input(), delimiter='|'):
     ###
     # TODO: save information to calculate Gini Index
     ##/
+    contributions_by_zip_and_candidate.setdefault(zip_code, defaultdict(int))[candidate_name] += 1
+    contributions_by_candidate[candidate_name] += 1
 
 ###
 # TODO: calculate the values below:
 gini = 0  # current Gini Index using candidate name as the class
 split_gini = 0  # weighted average of the Gini Indexes using candidate names, split up by zip code
 ##/
+def gini_index(values):
+    total = float(sum(values))
+    return 1 - sum([ (value / total) ** 2 for value in values])
+
+# Gini index for all zip codes
+gini = gini_index(contributions_by_candidate.values())
+
+total_contributions = float(sum(contributions_by_candidate.itervalues()))
+def zip_code_weight(contributions_by_candidate):
+    return sum(contributions_by_candidate) / total_contributions
+
+# Average Gini index over zip codes, weighted by number of records in that zip code
+split_gini = sum([zip_code_weight(contributions_in_zip_by_candidate.values()) * gini_index(contributions_in_zip_by_candidate.values()) for contributions_in_zip_by_candidate in contributions_by_zip_and_candidate.itervalues()])
 
 print "Gini Index: %s" % gini
 print "Gini Index after split: %s" % split_gini
+
+"""
+OUTPUT:
+Gini Index: 0.487709185938
+Gini Index after split: 0.414381001914
+"""
