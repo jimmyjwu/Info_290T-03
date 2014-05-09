@@ -1,0 +1,11 @@
+Final project: Yelp Elites in the Wild
+--------------------------------------
+
+Members:
+Jimmy Wu, David Wu, Alton Zheng
+
+Dataset URL:
+http://www.yelp.com/dataset_challenge/
+
+Project repository URL:
+https://github.com/jimmywu126/yelp_influence
